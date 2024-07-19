@@ -32,12 +32,6 @@ st.title("Sistem Rekomendasi Kerajinan Rajut")
 selected_crochet = st.selectbox("Mencari projek selanjutnya? Pilih salah satu",
 crochet['kerajinan'].values)
 
-with st.echo():
-    st.markdown(
-        '<img src="./app/static/cat.jpg" height="333" style="border: 5px solid orange">',
-        unsafe_allow_html=True,
-    )
-
 if st.button("Rekomendasikan"):
     recommendations = recommend(selected_crochet)
     st.write(f"Rekomendasi untuk {selected_crochet}")
@@ -50,15 +44,3 @@ if st.button("Rekomendasikan"):
         st.write(f"URL gambar: {gambar}")  # Debugging untuk memeriksa URL gambar
         with st.echo():
             st.markdown(f"[![Click me]({gambar})](https://streamlit.io)")
-
-        try:
-            response = requests.get(gambar, stream=True)
-            if response.status_code == 200:
-                image_bytes = io.BytesIO(response.content)
-                image = Image.open(image_bytes)
-                st.image(image, caption=kerajinan_name, use_column_width=True)
-            else:
-                st.write("Gambar tidak ditemukan!")
-        except Exception as e:
-            st.write(f":gray[Error: {e}]")
-            st.write("Gambar tidak dapat dimuat.")
