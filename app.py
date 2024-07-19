@@ -44,18 +44,6 @@ with st.echo():
 with st.echo():
     st.markdown("[![Click me](./app/static/alpukat.png)](https://streamlit.io)")
 
-with st.echo():
-    st.markdown("[![Click me](./app/static/apel.png)](https://streamlit.io)")
-
-with st.echo():
-    st.markdown("[![Click me](./app/static/bit.png)](https://streamlit.io)")
-
-with st.echo():
-    st.markdown("[![Click me](./app/static/babi.png)](https://streamlit.io)")
-
-with st.echo():
-    st.markdown("[![Click me](./app/static/brontosaurus.png)](https://streamlit.io)")
-
 
 """
 Or you can use images in HTML or SVG:
