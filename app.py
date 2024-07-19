@@ -1,56 +1,64 @@
-import numpy as np
-import pandas as pd
 import streamlit as st
+import pickle
+import pandas as pd
+from PIL import Image
+import requests
+import numpy as np
+import io
 
-st.write(
-    f'<span style="font-size: 78px; line-height: 1">🐱</span>',
-    unsafe_allow_html=True,
-)
+def recommend(kerajinan):
+    index = crochet[crochet['kerajinan'] == kerajinan].index[0]
+    crochet_list = sorted(list(enumerate(similarity[index])), reverse=True, key=lambda x: x[1])[1:6]
 
-"""
-# Static file serving
-"""
+    recommended_crochet = []
+    base_url = './app/static/'
+    for i in crochet_list:
+        kerajinan_name = crochet.iloc[i[0]].kerajinan
+        link = crochet.iloc[i[0]].link
+        image_jalur = crochet.iloc[i[0]].gambar
 
-st.caption(
-    "[Code for this demo](https://github.com/SurendraRedd/static-website/blob/main/app.py)"
-)
+        full_image_path = base_url + image_jalur
 
-"""
-Streamlit 1.18 allows you to serve small, static media files via URL. 
+        recommended_crochet.append([kerajinan_name, link, full_image_path])
+    return recommended_crochet
 
-## Instructions
+crochet_dict = pickle.load(open('crochet_dict.pkl', 'rb'))
+crochet = pd.DataFrame(crochet_dict)
 
-- Create a folder `static` in your app's root directory.
-- Place your files in the `static` folder.
-- Add the following to your `config.toml` file:
+similarity = pickle.load(open('similarity.pkl', 'rb'))
 
-```toml
-[server]
-enableStaticServing = true
-```
+st.title("Sistem Rekomendasi Kerajinan Rajut")
 
-You can then access the files on `<your-app-url>/app/static/<filename>`. Read more in our 
-[docs](https://docs.streamlit.io/library/advanced-features/static-file-serving).
-
-## Examples
-
-You can use this feature with `st.markdown` to put a link on an image:
-"""
-
-with st.echo():
-    st.markdown("[![Click me](./app/static/cat.jpg)](https://streamlit.io)")
-
-
-with st.echo():
-    st.markdown("[![Click me](./app/static/alpukat.png)](https://streamlit.io)")
-
-
-"""
-Or you can use images in HTML or SVG:
-"""
+selected_crochet = st.selectbox("Mencari projek selanjutnya? Pilih salah satu",
+crochet['kerajinan'].values)
 
 with st.echo():
     st.markdown(
-        '<img src="./app/static/dog.jpg" height="333" style="border: 5px solid orange">',
+        '<img src="./app/static/cat.jpg" height="333" style="border: 5px solid orange">',
         unsafe_allow_html=True,
     )
+
+if st.button("Rekomendasikan"):
+    recommendations = recommend(selected_crochet)
+    st.write(f"Rekomendasi untuk {selected_crochet}")
+
+    for rec in recommendations:
+        kerajinan_name, link, gambar = rec
+        st.write(f'<p class="font">{kerajinan_name}</p>', unsafe_allow_html=True)
+        st.write(f"[Link ke tutorial] ({link})")
+
+        st.write(f"URL gambar: {gambar}")  # Debugging untuk memeriksa URL gambar
+        with st.echo():
+            st.markdown(f"[![Click me]({gambar})](https://streamlit.io)")
+
+        try:
+            response = requests.get(gambar, stream=True)
+            if response.status_code == 200:
+                image_bytes = io.BytesIO(response.content)
+                image = Image.open(image_bytes)
+                st.image(image, caption=kerajinan_name, use_column_width=True)
+            else:
+                st.write("Gambar tidak ditemukan!")
+        except Exception as e:
+            st.write(f":gray[Error: {e}]")
+            st.write("Gambar tidak dapat dimuat.")
