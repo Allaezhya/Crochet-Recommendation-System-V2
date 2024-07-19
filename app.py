@@ -41,6 +41,5 @@ if st.button("Rekomendasikan"):
         st.write(f'<p class="font">{kerajinan_name}</p>', unsafe_allow_html=True)
         st.write(f"[Link ke tutorial] ({link})")
 
-        st.write(f"URL gambar: {gambar}")  # Debugging untuk memeriksa URL gambar
-        with st.echo():
-            st.markdown(f"[![Click me]({gambar})](https://streamlit.io)")
+        #st.write(f"URL gambar: {gambar}")  # Debugging untuk memeriksa URL gambar
+        st.markdown(f"[![Click me]({gambar})](https://streamlit.io)")
