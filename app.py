@@ -49,7 +49,7 @@ if st.button("Rekomendasikan"):
 
         st.write(f"URL gambar: {gambar}")  # Debugging untuk memeriksa URL gambar
         with st.echo():
-            st.markdown(f"[![Click me](aush{gambar})](https://streamlit.io)")
+            st.markdown(f"[![Click me]({gambar})](https://streamlit.io)")
 
         try:
             response = requests.get(gambar, stream=True)
