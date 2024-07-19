@@ -40,12 +40,10 @@ You can use this feature with `st.markdown` to put a link on an image:
 with st.echo():
     st.markdown("[![Click me](./app/static/cat.jpg)](https://streamlit.io)")
 
-"""
 
 with st.echo():
     st.markdown("[![Click me](./app/static/alpukat.png)](https://streamlit.io)")
 
-"""
 Or you can use images in HTML or SVG:
 """
 
