@@ -40,5 +40,5 @@ if st.button("Rekomendasikan"):
         kerajinan_name, link, gambar = rec
         st.header(f'{kerajinan_name}')
         st.link_button("Tutorial", f"{link}")
-        st.markdown(f"[![Click me]({gambar})[{link}]")
+        st.markdown(f"[![Click me]({gambar}){link}]")
         st.divider()
