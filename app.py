@@ -38,8 +38,7 @@ if st.button("Rekomendasikan"):
 
     for rec in recommendations:
         kerajinan_name, link, gambar = rec
-        st.write(f'<p class="font">{kerajinan_name}</p>', unsafe_allow_html=True)
-        st.write(f"[Link ke tutorial] ({link})")
-
-        #st.write(f"URL gambar: {gambar}")  # Debugging untuk memeriksa URL gambar
+        st.header(f'{kerajinan_name}')
+        st.link_button("Tutorial", f"{link}")
         st.markdown(f"[![Click me]({gambar})](https://streamlit.io)")
+        st.divider()
